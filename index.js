@@ -3,7 +3,9 @@ const {
   Client, 
   GatewayIntentBits, 
   Collection,
-  PermissionFlagsBits
+  PermissionFlagsBits,
+  REST,
+  Routes
 } = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
@@ -13,6 +15,9 @@ const { handleTicketInteractions, initializeTicketCounter } = require('./utils/t
 const { handleStickyMessage } = require('./utils/stickySystem.js');
 const { findAutoresponder, getEmbed, loadOrders } = require('./utils/dataManager.js');
 const { buildPreviewEmbed, handleEmbedEdit, handleEmbedModal } = require('./utils/embedSystem.js');
+
+// Initialize REST client for v2 messages
+const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 // Create client
 const client = new Client({
@@ -147,7 +152,6 @@ client.on('interactionCreate', async interaction => {
 
     // ==================== SELECT MENUS ====================
     if (interaction.isStringSelectMenu()) {
-      // Order status select menu (from Note & Process button)
       // Order status select menu (from Note & Process button)
       if (interaction.customId.startsWith('order_status_')) {
         console.log('ORDER STATUS SELECT TRIGGERED');
@@ -285,7 +289,31 @@ client.on('interactionCreate', async interaction => {
     }
 
     // ==================== MODALS ====================
-    if (interaction.isModalSubmit()) {
+      // ==================== MODALS ====================
+      if (interaction.isModalSubmit()) {
+        // Send v2 message modal
+        if (interaction.customId === 'sendv2_modal') {
+          const jsonPayload = interaction.fields.getTextInputValue('json_payload');
+          try {
+            const payload = JSON.parse(jsonPayload);
+            // Ensure the IS_COMPONENTS_V2 flag is set
+            if (!payload.flags) {
+              payload.flags = 32768;
+            } else if (!(payload.flags & 32768)) {
+              payload.flags |= 32768;
+            }
+            const { REST, Routes } = require('discord.js');
+            const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+            await rest.post(Routes.channelMessages(interaction.channelId), { body: payload });
+            await interaction.reply({ content: '✅ Components V2 message sent successfully!', ephemeral: true });
+          } catch (error) {
+            console.error('Error sending V2 message:', error);
+            await interaction.reply({ content: `❌ Error: ${error.message}`, ephemeral: true });
+          }
+          return; // IMPORTANT: Return here so it doesn't continue
+      }
+      // ... rest of your code
+
       // Embed edit modals
       const embedModalHandled = await handleEmbedModal(interaction);
       if (embedModalHandled) return;
@@ -314,6 +342,7 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
+
 // On ready
 client.once('ready', () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
@@ -337,6 +366,7 @@ client.once('ready', () => {
   console.log('   • Sticky Messages');
   console.log('   • Order Tracking');
   console.log('   • Activity Alerts');
+  console.log('   • Components V2 Message Sender');
 });
 
 // Login

@@ -124,6 +124,20 @@ const commands = [
         .setDescription('The user to alert')
         .setRequired(true)),
 
+  // ==================== V2 W MSG COMMAND ====================
+  new SlashCommandBuilder()
+  .setName('sendv2')
+  .setDescription('Send a Components V2 message')
+  .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+  .addStringOption(option =>
+    option.setName('type')
+      .setDescription('Type of message to send')
+      .setRequired(true)
+      .addChoices(
+        { name: 'Custom JSON', value: 'custom' },
+        { name: 'Test Message', value: 'test' }
+      )
+  ),
   // ==================== TICKET COMMAND ====================
   new SlashCommandBuilder()
     .setName('ticket')
