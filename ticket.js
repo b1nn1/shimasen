@@ -55,7 +55,7 @@ async function handleTicketInteractions(client, interaction) {
       // Create and show the modal
       const modal = new ModalBuilder()
         .setCustomId('ticket_modal')
-        .setTitle('order at /shimas!');
+        .setTitle('order at wynter shop!');
 
       const itemTypeInput = new TextInputBuilder()
         .setCustomId('item_type')
@@ -149,7 +149,7 @@ async function handleTicketInteractions(client, interaction) {
       });
 
       const welcomeEmbed = new EmbedBuilder()
-        .setImage('https://cdn.discordapp.com/attachments/1333193696920866866/1386750620811268126/f510a7275adea46cfcc68e95d95133f0.jpg')
+        .setImage('https://cdn.discordapp.com/attachments/1336151484869378109/1452675018491170816/imageedit_13_6552957685.png?ex=694aac89&is=69495b09&hm=773b8874fab1a5a5dd1ef27b4873aa5215e71e2dd242c7e969bcc1c191831085&')
         .setColor(0x36393f);
 
       // Create order details embed with modal information
@@ -209,7 +209,7 @@ async function handleTicketInteractions(client, interaction) {
       const confirmEmbed = new EmbedBuilder()
         .setTitle('🔒 Ticket Closing')
         .setDescription('This ticket will be deleted in **5 seconds**.\nClick "Cancel" to stop.')
-        .setColor(0xff6b6b);
+        .setColor(0x36393f);
 
       const confirmRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder()

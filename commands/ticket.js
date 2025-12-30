@@ -13,7 +13,7 @@ module.exports = {
           new ButtonBuilder()
             .setCustomId('create_ticket')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji('<a:ver_tv:1387280216199528560>')
+            .setEmoji('<a:00:1452143202428780544>')
         );
 
       // Send visible message with button in the channel where command was run

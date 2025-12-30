@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Transcript - {{TICKET_NAME}}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=gg+sans:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #dcddde;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #000;
+        }
+
+        .header {
+            background: #111;
+            border-bottom: 1px solid #202225;
+            padding: 20px 30px;
+        }
+
+        .channel-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .channel-icon {
+            color: #b9bbbe;
+        }
+
+        .channel-topic {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #b9bbbe;
+        }
+
+        .info-section {
+            background: #111;
+            border: 1px solid #202225;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 30px;
+        }
+
+        .info-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #b9bbbe;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #dcddde;
+        }
+
+        .messages-container {
+            padding: 20px 30px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0 20px;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #202225;
+        }
+
+        .divider-text {
+            padding: 0 15px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #b9bbbe;
+        }
+
+        .message {
+            display: flex;
+            gap: 16px;
+            padding: 8px 0;
+            margin-bottom: 4px;
+            position: relative;
+        }
+
+        .message:hover {
+            background: #04040580;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #202225;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .message-content-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+
+        .message-author {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .message-timestamp {
+            font-size: 12px;
+            color: #a3a6aa;
+            font-weight: 500;
+        }
+
+        .message-text {
+            font-size: 16px;
+            line-height: 1.375;
+            color: #dcddde;
+            word-wrap: break-word;
+        }
+
+        .attachment {
+            margin-top: 8px;
+            max-width: 520px;
+        }
+
+        .attachment-image-placeholder {
+            border-radius: 4px;
+            max-width: 100%;
+            cursor: pointer;
+        }
+
+        .attachment-file {
+            background: #2f3136;
+            border: 1px solid #202225;
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 520px;
+        }
+
+        .file-icon {
+            width: 32px;
+            height: 32px;
+            background: #5865f2;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-size: 14px;
+            color: #00aff4;
+            cursor: pointer;
+            margin-bottom: 2px;
+        }
+
+        .file-name:hover {
+            text-decoration: underline;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #b9bbbe;
+        }
+
+        .bot-tag {
+            background: #5865f2;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        .system-message {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            margin: 8px 0;
+        }
+
+        .system-icon {
+            width: 24px;
+            height: 24px;
+            background: #5865f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .system-text {
+            font-size: 14px;
+            color: #b9bbbe;
+        }
+
+        .system-text strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .footer {
+            background: #111;
+            border-top: 1px solid #202225;
+            padding: 20px 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #b9bbbe;
+        }
+
+        .timestamp-large {
+            font-size: 14px;
+            color: #a3a6aa;
+            margin: 20px 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="channel-name">
+                <span class="channel-icon">#</span>
+                {{TICKET_NAME}}
+            </div>
+            <div class="channel-topic">
+                Ticket transcript • Customer: {{CUSTOMER_TAG}} • Closed by {{CLOSED_BY}}
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-title">Ticket Information</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Customer</div>
+                    <div class="info-value">{{CUSTOMER_TAG}} ({{CUSTOMER_ID}})</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Created</div>
+                    <div class="info-value">{{CREATED_DATE}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Closed</div>
+                    <div class="info-value">{{CLOSED_DATE}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Closed By</div>
+                    <div class="info-value">{{CLOSED_BY}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-title">Order Details</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Item Type</div>
+                    <div class="info-value">{{ITEM_TYPE}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Quantity</div>
+                    <div class="info-value">{{QUANTITY}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Payment Method</div>
+                    <div class="info-value">{{PAYMENT_METHOD}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="messages-container">
+            <div class="divider">
+                <div class="divider-line"></div>
+                <div class="divider-text">MESSAGE LOG</div>
+                <div class="divider-line"></div>
+            </div>
+
+            {{MESSAGES}}
+
+        </div>
+
+        <div class="footer">
+            <div class="footer-text">
+                Transcript generated automatically by dokkaebii • Ticket #{{TICKET_NUMBER}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
