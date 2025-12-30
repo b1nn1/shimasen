@@ -192,7 +192,7 @@ async function handleTicketInteractions(client, interaction) {
     if (interaction.customId === 'create_ticket') {
       const modal = new ModalBuilder()
         .setCustomId('ticket_modal')
-        .setTitle('order at /shimas!');
+        .setTitle('order from wynter');
 
       const itemTypeInput = new TextInputBuilder()
         .setCustomId('item_type')
